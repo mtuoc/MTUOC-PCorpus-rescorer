@@ -53,3 +53,35 @@ To rescore the corpus corpus-eng-spa.txt we can write:
 Once the rescoring process is finished we can us sqlite3 to access and process the data in the database. But a companion program, MTUOC-PCorpus-selector.py, will help us to do these actions.
 
 ## MTUOC-PCorpus-selector.py
+
+This program also has the -h option that writes the help:
+
+```
+python3 MTUOC-PCorpus-selector.py -h
+usage: MTUOC-PCorpus-selector.py [-h] -d DATABASE --sl SL --sldc SLDC --tl TL --tldc TLDC [-m MINSBERT] [-l LIMIT] -o
+                                 OUTFILE
+
+MTUOC-PCorpus-selector: a script to select parallel segments from a rescorer database created with MTUOC_PCorpus-
+rescorer.
+
+options:
+  -h, --help            show this help message and exit
+  -d DATABASE, --database DATABASE
+                        The SQLITE database file.
+  --sl SL               The source language code.
+  --sldc SLDC           The minimum source language detection confidence.
+  --tl TL               The target language code.
+  --tldc TLDC           The minimum target language detection confidence.
+  -m MINSBERT, --minSBERT MINSBERT
+                        The minimum value for SBERT score.
+  -l LIMIT, --limit LIMIT
+                        The number of segments to be selected.
+  -o OUTFILE, --outfile OUTFILE
+                        The output file containing the parallel corpus.
+```
+
+If we want to select the segments with English as a source language with a confidence of 0.75, Spanish as a target language with a confidence of 0.75 and both segments being the translation equivalents with a confidence of 0.75, we can write:
+
+`python3 MTUOC-PCorpus-selector.py -d corpus-eng-spa.sqlite --sl en --sldc 0.75 --tl es --tldc 0.75 -m 0.75 -o corpus-rescored.txt`
+
+In the output file corpus-rescored.txt we will have the segments matching this condition.
