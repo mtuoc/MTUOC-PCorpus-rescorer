@@ -20,7 +20,7 @@ This program creates a SQLite database storing the following information:
 * confL2: the language detection confidence for target language
 * cosine_score: the cosine similarity between source and target segments.
 
-We can get the helo of the program with option -h:
+We can get the help of the program with option -h:
 
 ```
 python3 MTUOC-PCorpus-rescorer.py -h
@@ -40,4 +40,16 @@ options:
   -LDmodel LDMODEL      The fasttext language detection model. Default model: lid.176.bin
 ```
 
+Remember that you need a fasttext language model detection. You can get one writing:
 
+`wget https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin`
+
+To rescore the corpus corpus-eng-spa.txt we can write:
+
+`python3 MTUOC-PCorpus-rescorer.py -i corpus-eng-spa.txt -d corpus-eng-spa.sqlite`
+
+
+
+Once the rescoring process is finished we can us sqlite3 to access and process the data in the database. But a companion program, MTUOC-PCorpus-selector.py, will help us to do these actions.
+
+## MTUOC-PCorpus-selector.py
