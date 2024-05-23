@@ -4,3 +4,18 @@ A set of programs to rescore parallel corpora developed in the framework of the 
 ## Prerequisites
 
 By default, the program uses the fasttext language identification model [lid.176.bin](https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin). You should download this model to the same directory of the programs. You may use any other fastext language identification model and even train your own model, as explained below.
+
+The file requirements.txt have the requirements to install in order to run the programs.
+
+## MTUOC-PCorpus-rescorer.py
+
+This program creates a SQLite database storing the following information:
+
+* source: the source segment
+* target: the target segment
+* score: for those corpora with a confidence score, as CCMatrix, for example, this confidence score is stored in this field.
+* L1: the source language code detected by fasttext
+* confL1: the language detection confidence for source language
+* L2: the target language code detected by fasttext
+* confL2: the language detection confidence for target language
+* cosine_score: the cosine similarity between source and target segments.
