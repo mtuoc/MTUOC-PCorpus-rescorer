@@ -18,7 +18,7 @@ import codecs
 import sys
 import argparse
 
-parser = argparse.ArgumentParser(description='MTUOC-PCorpus-selector: a script to select parallel segments from a rescorer database created with MTUOC_PCorpus-rescorer. ')
+parser = argparse.ArgumentParser(description='MTUOC-PCorpus-selector: a script to select parallel segments from a rescorer text file created with MTUOC_PCorpus-rescorer-txt. ')
 parser.add_argument("-i","--input", type=str, help="The text file resulting from MTUOC-PCorpus-rescorer.py.", required=True)
 parser.add_argument("--sl", help="The source language code.", required=True)
 parser.add_argument("--sldc", type=float, help="The minimum source language detection confidence.", required=True)

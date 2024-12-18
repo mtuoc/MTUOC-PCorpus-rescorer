@@ -59,7 +59,7 @@ def process(sources,targets,scores,sortida):
             print("ERROR:",sys.exc_info())
     
 
-parser = argparse.ArgumentParser(description='MTUOC-PCorpus-rescorer: a script to score parallel corpora. The parallel corpus file should be a TSV file with source segment, target segment and, optionally, a score. It creates a Sqlite database that should be used with the companion program MTUOC-PCorpus-selector.')
+parser = argparse.ArgumentParser(description='MTUOC-PCorpus-rescorer: a script to score parallel corpora. The parallel corpus file should be a TSV file with source segment, target segment and, optionally, a score. It creates a text file that should be used with the companion program MTUOC-PCorpus-selector-txt.')
 parser.add_argument("-i","--input", type=str, help="The input parallel corpus file.", required=True)
 parser.add_argument("-o","--output", type=str, help="The output file with the data.", required=True)
 parser.add_argument("-SEmodel",type=str, help="The SentenceTransformer model. Default model: LaBSE", required=False, default="LaBSE")
