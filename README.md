@@ -7,6 +7,67 @@ By default, the program uses the fasttext language identification model [lid.176
 
 The file requirements.txt have the requirements to install in order to run the programs.
 
+It is important to install the version of numpy stated in the requirements.txt file. It is also recommended to use a virtual Python environment to avoid conflicts with libraries already installed on your sistem.
+
+Two versions of the program are provided: one using text files as output of the rescoring process and one using a SQLite database.
+
+## Using text files
+
+### MTUOC-PCorpus-rescorer-txt.py
+
+The option -h shows the help of the program:
+
+```
+python3 MTUOC-PCorpus-rescorer-txt.py -h
+usage: MTUOC-PCorpus-rescorer-txt.py [-h] -i INPUT -o OUTPUT [-SEmodel SEMODEL]
+                                     [-LDmodel LDMODEL]
+
+MTUOC-PCorpus-rescorer: a script to score parallel corpora. The parallel corpus file
+should be a TSV file with source segment, target segment and, optionally, a score. It
+creates a text file that should be used with the companion program MTUOC-PCorpus-selector-
+txt.
+
+options:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        The input parallel corpus file.
+  -o OUTPUT, --output OUTPUT
+                        The output file with the data.
+  -SEmodel SEMODEL      The SentenceTransformer model. Default model: LaBSE
+  -LDmodel LDMODEL      The fasttext language detection model. Default model: lid.176.bin
+```
+
+Once the text file with the rescoring information is created, the program MTUOC-PCorpus-selector-txt.py should be used.
+
+### MTUOC-PCorpus-selector-txt.py
+
+The option -h shows the help of the program:
+
+```
+python3 MTUOC-PCorpus-selector-txt.py -h
+usage: MTUOC-PCorpus-selector-txt.py [-h] -i INPUT --sl SL --sldc SLDC --tl TL --tldc TLDC
+                                     [-m MINSBERT] -o OUTFILE
+
+MTUOC-PCorpus-selector: a script to select parallel segments from a rescorer text file
+created with MTUOC_PCorpus-rescorer-txt.
+
+options:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        The text file resulting from MTUOC-PCorpus-rescorer.py.
+  --sl SL               The source language code.
+  --sldc SLDC           The minimum source language detection confidence.
+  --tl TL               The target language code.
+  --tldc TLDC           The minimum target language detection confidence.
+  -m MINSBERT, --minSBERT MINSBERT
+                        The minimum value for SBERT score.
+  -o OUTFILE, --outfile OUTFILE
+                        The output file containing the parallel corpus.
+
+```
+
+## Using SQLite database
+
 ## MTUOC-PCorpus-rescorer.py
 
 This program creates a SQLite database storing the following information:
