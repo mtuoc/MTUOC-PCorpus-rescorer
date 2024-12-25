@@ -11,6 +11,12 @@ It is important to install the version of numpy stated in the requirements.txt f
 
 Two versions of the program are provided: one using text files as output of the rescoring process and one using a SQLite database.
 
+If you encounter the error: "ERROR: (<class 'ValueError'>, ValueError('Unable to avoid copy while creating an array as requested.\nIf using np.array(obj, copy=False) replace it with np.asarray(obj) to allow a copy when needed (no behavior change in NumPy 1.x).\nFor more details, see https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword.'), <traceback object at 0x7f78cc533900>)"
+
+Install the following version of numpy:
+
+```pip install numpy==1.24.4```
+
 ## Using text files
 
 ### MTUOC-PCorpus-rescorer-txt.py
