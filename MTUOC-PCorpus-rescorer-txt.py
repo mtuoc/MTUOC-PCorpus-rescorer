@@ -22,41 +22,52 @@ import fasttext
 from sentence_transformers import SentenceTransformer, util
 
 
-def process(sources,targets,scores,sortida):
-    data=[]
+def process(sources, targets, scores, sortida):
+    data = []
     embeddings1 = model.encode(sources, convert_to_tensor=False)
     embeddings2 = model.encode(targets, convert_to_tensor=False)
     cosine_scores = util.cos_sim(embeddings1, embeddings2)
+
     for i in range(len(sources)):
         try:
-            source=sources[i]
-            target=targets[i]
-            score=float(scores[i])
-            cosine_score=cosine_scores[i][i].item()
-            DL1=modelFT.predict(source, k=5)
-            DL2=modelFT.predict(target, k=5)
-            predL1=[]
-            for i in range(0,4):
-                L1=DL1[0][i].replace("__label__","")
-                confL1=float(DL1[1][i])
-                info=L1+":"+str(confL1)
-                predL1.append(info)
-            predL1=";".join(predL1)
+            source = sources[i]
+            target = targets[i]
+            score = float(scores[i]) if scores[i] != 0 else 0.0
+            cosine_score = cosine_scores[i][i].item()
             
-            predL2=[]
-            for i in range(0,4):
-                L2=DL2[0][i].replace("__label__","")
-                confL2=float(DL2[1][i])
-                info=L2+":"+str(confL2)
-                predL2.append(info)
-            predL2=";".join(predL2)
+            # Language detection predictions
+            DL1 = modelFT.predict(source, k=5)
+            DL2 = modelFT.predict(target, k=5)
             
-            cadena=source+"\t"+target+"\t"+predL1+"\t"+predL2+"\t"+str(cosine_score)
-            sortida.write(cadena+"\n")
+            # Validate DL1 and DL2 have enough predictions
+            if len(DL1[0]) < 1 or len(DL2[0]) < 1:
+                print(f"WARNING: Insufficient labels for line {i}")
+                continue
             
-            
-        except:
-            print("ERROR:",sys.exc_info())
+            predL1 = []
+            for j in range(len(DL1)-1):
+                L1 = DL1[0][j].replace("__label__", "")
+                confL1 = float(DL1[1][j])
+                predL1.append(f"{L1}:{confL1}")
+            predL1 = ";".join(predL1)
+
+            predL2 = []
+            for j in range(len(DL2)-1):
+                L2 = DL2[0][j].replace("__label__", "")
+                confL2 = float(DL2[1][j])
+                predL2.append(f"{L2}:{confL2}")
+            predL2 = ";".join(predL2)
+
+            # Write the output line
+            cadena = f"{source}\t{target}\t{predL1}\t{predL2}\t{cosine_score}"
+            sortida.write(cadena + "\n")
+
+        except Exception as e:
+            print(f"ERROR processing line {i}: {e}")
+
+
+
+
     
 
 parser = argparse.ArgumentParser(description='MTUOC-PCorpus-rescorer: a script to score parallel corpora. The parallel corpus file should be a TSV file with source segment, target segment and, optionally, a score. It creates a text file that should be used with the companion program MTUOC-PCorpus-selector-txt.')
@@ -84,6 +95,7 @@ model = SentenceTransformer(SEmodel)
 entrada=codecs.open(fentrada,"r",encoding="utf-8")
 sortida=codecs.open(fsortida,"w",encoding="utf-8")
 
+
 cont=0
 sources=[]
 targets=[]
@@ -92,6 +104,9 @@ scores=[]
 
 cont=0
 cont2=1
+
+
+
 for linia in entrada:
     linia=linia.rstrip()
     camps=linia.split("\t")
